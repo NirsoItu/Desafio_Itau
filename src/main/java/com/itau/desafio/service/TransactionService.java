@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +21,7 @@ public class TransactionService {
 
     // Método para listar todas as transações
     public List<TransactionModel> getAllTransactionsList() {
+        logger.info("Lista com todas as transações - Status: 200: "+transactionModelList);
         return transactionModelList;
     }
 
@@ -54,7 +54,7 @@ public class TransactionService {
         }
     }
 
-    // Método para verificar uma das regras do negócio: Se o valor da transação o valor igual ou abaixo de zero
+    // Método para verificar uma das regras do negócio: Se o valor da transação é igual ou abaixo de zero
     public static boolean isTransactionUnderZero (TransactionModel transactionModel) throws ResponseStatusException {
         if (transactionModel.getValor() <= 0) {
             logger.info("A transação não foi aceita por qualquer motivo (1 ou mais dos critérios de aceite não foram\n" +
