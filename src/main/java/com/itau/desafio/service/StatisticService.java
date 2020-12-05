@@ -2,6 +2,8 @@ package com.itau.desafio.service;
 
 import com.itau.desafio.model.StatisticModel;
 import com.itau.desafio.model.TransactionModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,6 +13,9 @@ import java.util.List;
 
 @Service
 public class StatisticService {
+
+    // Construtor de logs
+    private static Logger logger = LoggerFactory.getLogger(StatisticService.class);
 
     public StatisticModel create(List<TransactionModel> transactions) {
 
@@ -24,6 +29,9 @@ public class StatisticService {
 
         // Instacia a entidade de estatistica
         StatisticModel statistics = new StatisticModel();
+
+        // Criando as estatísticas
+        logger.info("Criando as estatísticas");
 
         // Retorna a quantidade de transações nos últimos 60 segundos
         statistics.setCount(transactions.stream()
@@ -57,6 +65,8 @@ public class StatisticService {
                 .filter(data -> data.getDataHora().isBefore(hoje))
                 .mapToDouble(t -> t.getValor().doubleValue()).sum())
                 .setScale(2, RoundingMode.HALF_UP));
+
+        logger.info("Lista das estatísticas: "+statistics);
 
         return statistics;
     }
