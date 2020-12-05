@@ -55,7 +55,7 @@ public class TransactionService {
     }
 
     // Método para verificar uma das regras do negócio: Se o valor da transação é igual ou abaixo de zero
-    public static boolean isTransactionUnderZero (TransactionModel transactionModel) throws ResponseStatusException {
+    public boolean isTransactionUnderZero (TransactionModel transactionModel) throws ResponseStatusException {
         if (transactionModel.getValor() <= 0) {
             logger.info("A transação não foi aceita por qualquer motivo (1 ou mais dos critérios de aceite não foram\n" +
                     "atendidos - Error: 422");
