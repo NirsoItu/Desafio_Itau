@@ -1,5 +1,6 @@
 package com.itau.desafio.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itau.desafio.model.StatisticModel;
 import com.itau.desafio.model.TransactionModel;
 import com.itau.desafio.service.StatisticService;
@@ -29,10 +30,9 @@ public class StatisticController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/estatistica")
     @ApiOperation(value = "Retorna uma lista de estatísticas")
-    public ResponseEntity<StatisticModel> getStatistics() {
-
-        List<TransactionModel> transactions = transactionService.getAllTransactionsList();
+    public ResponseEntity<StatisticModel> getStatistics() throws JsonProcessingException {
         logger.info("Chamando o método para listar todas as transações...");
+        List<TransactionModel> transactions = transactionService.getAllTransactionsList();
         StatisticModel statistics = statisticsService.create(transactions);
         return ResponseEntity.ok(statistics);
     }
