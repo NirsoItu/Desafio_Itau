@@ -39,7 +39,7 @@ public class TimeService {
 
     // Método para verificar se o tempo é igual ou abaixo de zero
     public boolean isTransactionUnderZero (TimeModel timeModel) throws ResponseStatusException {
-        if (timeModel.getSeconds() <= 0) {
+        if (timeModel.getSeconds() < 0) {
             logger.info("O tempo não pode ser igual ou menor a zero - Error: 422");
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
