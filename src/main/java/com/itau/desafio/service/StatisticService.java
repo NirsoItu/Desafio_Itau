@@ -1,10 +1,15 @@
 package com.itau.desafio.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itau.desafio.model.StatisticModel;
 import com.itau.desafio.model.TransactionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,23 +17,43 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
-public class StatisticService {
+public class StatisticService extends TimeService{
 
     // Construtor de logs
     private static Logger logger = LoggerFactory.getLogger(StatisticService.class);
 
-    public StatisticModel create(List<TransactionModel> transactions) {
+    public StatisticModel create(List<TransactionModel> transactions) throws JsonProcessingException {
 
-        // Data padrão para teste = OffsetDateTime.parse("2020-12-01T15:01:00-03:00")
+        // Construtor de tempo
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/tempo";
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        // Mapeando objeto tempo, pegando o valor e convertendo para string
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(response.getBody());
+        String tempo = root.get(0).toString();
+
+        // Limpando a String
+        String dadoLimpo = tempo.replace("{","")
+                .replace("}","")
+                .replaceAll("\"seconds\":","");
+
+        // Convertendo para Integer
+        Integer tempoConvertido = Integer.parseInt(dadoLimpo);
+
+        // *** Tipo de Data padrão utilizada para teste 2020-12-06T15:01:00-03:00 ****
 
         // Retorna a data e horario do momento no padrão ISO 8601
         OffsetDateTime hoje = OffsetDateTime.now();
 
-        // Retorna a data e horario do momento menos 60 segundos
-        OffsetDateTime hojeMenosUm = hoje.minusSeconds(60);
-
         // Instacia a entidade de estatistica
         StatisticModel statistics = new StatisticModel();
+
+        // Retorna a data e horario do momento menos a quantidade de segundos,
+        // por padrão o objeto inicia com 60 na classe TimeService
+        OffsetDateTime hojeMenosUm = hoje.minusSeconds(tempoConvertido);
 
         // Criando as estatísticas
         logger.info("Criando as estatísticas");
