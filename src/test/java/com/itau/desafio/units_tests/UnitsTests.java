@@ -1,6 +1,8 @@
 package com.itau.desafio.units_tests;
 
+import com.itau.desafio.model.TimeModel;
 import com.itau.desafio.model.TransactionModel;
+import com.itau.desafio.service.TimeService;
 import com.itau.desafio.service.TransactionService;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,6 +109,55 @@ public class UnitsTests extends AbstractTest{
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
+    }
+
+    // Teste para verificar a requisição da lista de transações
+    @Test
+    public void getTimeTest() throws Exception {
+        String uri = "/tempo";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+    }
+
+    // Teste para verificar a requisição de criação de uma transação
+    @Test
+    public void createTimeTest() throws Exception {
+        TimeService timeService = new TimeService();
+        TimeModel tempo = new TimeModel();
+
+        String uri = "/tempo";
+
+        tempo.setSeconds(120);
+        timeService.addSeconds(tempo);
+
+        String inputJson = super.mapToJson(tempo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(inputJson))
+                .andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        //assertEquals(201, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        assertEquals(content, "O tempo foi incluído com sucesso! ");
+        System.out.println(content);
+    }
+
+    // Teste para verificar a validação da regra de negócio (Igual ou menor a zero)
+    @Test
+    public void isTimeUnderZeroTest() throws Exception {
+        TimeService timeService = new TimeService();
+        TimeModel timeModel = new TimeModel();
+
+        // Coloque qualquer valor negativo ou zero que retornara erro
+        timeModel.setSeconds(120);
+
+        boolean expResult = false;
+        boolean result = timeService.isTransactionUnderZero(timeModel);
+        assertEquals(expResult, result);
     }
 
 }
