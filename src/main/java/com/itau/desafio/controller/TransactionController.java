@@ -36,19 +36,18 @@ public class TransactionController {
     // Endpoint para incluir uma transação
     @RequestMapping(method = RequestMethod.POST, value = "/transacao")
     @ApiOperation(value = "Cria uma transação")
-    public ResponseEntity<?> post(@RequestBody TransactionModel transactionModel) throws Exception {
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void post(@RequestBody TransactionModel transactionModel) throws Exception {
         logger.info("Chamando o método para criar a transação...");
         transactionService.addTransaction(transactionModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body("A transação foi aceita ");
     }
 
     // Endpoint para deletar todas as transações
     @RequestMapping(method = RequestMethod.DELETE, value = "/transacao")
     @ApiOperation(value = "Deleta a lista de transações")
-    public ResponseEntity<?> deleteTransaction(TransactionModel transactionModel) {
+    public void deleteTransaction(TransactionModel transactionModel) {
         logger.info("Chamando o método para apagar todas as transações...");
         transactionService.deleteAllTransactions(transactionModel);
-        return ResponseEntity.status(HttpStatus.OK).body("Todas as transações foram apagadas com sucesso ");
     }
 
 }
