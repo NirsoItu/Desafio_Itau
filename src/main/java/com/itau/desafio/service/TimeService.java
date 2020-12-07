@@ -32,15 +32,13 @@ public class TimeService {
             timeModelList.add(timeModel);
             logger.info("O tempo foi incluido  com sucesso - Status: 201");
         }
-        timeModelList.clear();
-        timeModelList.add(timeModel);
         return timeModel;
     }
 
     // Método para verificar se o tempo é igual ou abaixo de zero
     public boolean isTransactionUnderZero (TimeModel timeModel) throws ResponseStatusException {
         if (timeModel.getSeconds() < 0) {
-            logger.info("O tempo não pode ser igual ou menor a zero - Error: 422");
+            logger.info("O tempo não pode ser menor a zero - Error: 422");
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             return false;
