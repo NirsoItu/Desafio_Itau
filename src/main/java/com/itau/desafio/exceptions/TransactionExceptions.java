@@ -15,14 +15,7 @@ public class TransactionExceptions extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value={ResponseStatusException.class})
     public ResponseEntity<Object> handleUnprocessableEntityException(Exception e, WebRequest request){
 
-        String errorDescription = e.getLocalizedMessage();
-        if(errorDescription == null) errorDescription = e.getLocalizedMessage();
-
-        Integer errorStatus = HttpStatus.UNPROCESSABLE_ENTITY.value();
-
-        ErrorMessage errorMessage = new ErrorMessage(errorStatus, errorDescription);
-
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(value={NullPointerException.class})
