@@ -21,7 +21,7 @@ public class TimeController {
 
     // Endpoint para buscar o tempo de estatística
     @RequestMapping(method = RequestMethod.GET, value = "/tempo")
-    @ApiOperation(value = "Retorna um tempo em segundos para estatísca atual")
+    @ApiOperation(value = "Retorna um tempo em segundos para estatística atual")
     public List<TimeModel> getSeconds() {
         timeService.getSeconds();
         return timeService.getSeconds();
@@ -29,9 +29,9 @@ public class TimeController {
 
     // Endpoint para incluir um tempo de estatística
     @RequestMapping(method = RequestMethod.POST, value = "/tempo")
-    @ApiOperation(value = "Cria um tempo em segundos para estatísca atual")
+    @ApiOperation(value = "Cria um tempo em segundos para estatística atual")
     public ResponseEntity<?> post(@RequestBody TimeModel timeModel) throws Exception {
         timeService.addSeconds(timeModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body("O tempo foi incluído com sucesso! ");
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 }
