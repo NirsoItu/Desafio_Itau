@@ -42,7 +42,7 @@ public class UnitsTests extends AbstractTest{
 
         String uri = "/transacao";
 
-        transacao.setValor(55.00f);
+        transacao.setValor(55.0f);
         transacao.setDataHora(OffsetDateTime.parse("2020-12-01T15:01:00-03:00"));
         transactionService.addTransaction(transacao);
 
@@ -56,7 +56,6 @@ public class UnitsTests extends AbstractTest{
         //assertEquals(201, status);
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(content, "");
-        System.out.println(content);
     }
 
     // Teste para verificar a requisição remoção das transações
@@ -68,7 +67,7 @@ public class UnitsTests extends AbstractTest{
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(content, "Todas as transações foram apagadas com sucesso ");
+        assertEquals(content, "");
     }
 
     // Teste para verificar a validação da regra de negócio (Igual ou menor a zero)
@@ -100,16 +99,6 @@ public class UnitsTests extends AbstractTest{
         assertEquals(expResult, result);
     }
 
-    // Teste para verificar a requisição da lista de estatisticas
-    @Test
-    public void getStatisticsListTest() throws Exception {
-        String uri = "/estatistica";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
-    }
 
     // Teste para verificar a requisição da lista de transações
     @Test
@@ -140,9 +129,9 @@ public class UnitsTests extends AbstractTest{
                 .andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        //assertEquals(201, status);
+        assertEquals(201, status);
         String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(content, "O tempo foi incluído com sucesso! ");
+        assertEquals(content, "");
         System.out.println(content);
     }
 
